@@ -1,9 +1,6 @@
 { inputs, config, pkgs, lib, ... }:
 
 {
-  # ----------------------------------------
-  # Basic system and user settings
-  # ----------------------------------------
   imports = [ ./hardware-configuration.nix ];  # from installer
   nixpkgs.config.allowUnfree = true;           # allow non-free (NVIDIA, Steam, etc.)
 
@@ -26,6 +23,11 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
     libbdplus                           # Blu‑ray library
     vim                                 # emergency editor for root
     nixos-artwork.wallpapers.catppuccin-mocha
+    catppuccin
+    catppuccin-kde
+    catppuccin-gtk
+    catppuccin-sddm
+    catppuccin-grub
     catppuccin-plymouth
     wget                                # download tool for system scripts
     unrar                               # maybe needed by system services
