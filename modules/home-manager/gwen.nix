@@ -29,6 +29,8 @@
     winetricks
     libreoffice-qt6-fresh
     tt
+    _1password-cli
+    _1password-gui
     (python3.withPackages (ps: with ps; [ websockets ]))
   ];
     
