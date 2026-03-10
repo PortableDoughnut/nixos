@@ -25,8 +25,29 @@
     };
 
 
+  # ====== SHARED DRIVES CONFIGURATION ======
+  systemd.tmpfiles.rules = [
+    "d /shared 0755 root users -"
+    "d /shared/Garnet 0755 root users -"
+    "d /shared/Pearl 0755 root users -"
+  ];
+
+  fileSystems."/shared/Garnet" = {
+    device = "/dev/disk/by-uuid/bf49a367-83dd-4d9c-ab5b-5aaa29906569";
+    fsType = "ext4";
+    options = [ "nofail" "x-gvfs-show" "rw" ];
+  };
+
+  fileSystems."/shared/Pearl" = {
+    device = "/dev/disk/by-uuid/d6dce8f5-8c8e-4088-b697-cf7016618972";
+    fsType = "btrfs";
+    options = [ "nofail" "x-gvfs-show" "rw" ];
+  };
+
+
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/8c3d9c29-52e3-451a-8301-083bc291bfdd"; }
+    [ { device = "/dev/disk/by-uuid/8c3d9c29-52e3-451a-8301-083bc291bfdd"; 
+    }
     ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

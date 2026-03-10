@@ -170,27 +170,6 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
   
   hardware.steam-hardware.enable = true;
 
-  # ====== SHARED DRIVES CONFIGURATION ======
-  # 1. Create the shared directory
-  systemd.tmpfiles.rules = [
-    "d /shared 0755 root users -"
-    "d /shared/Garnet 0755 root users -"
-    "d /shared/Pearl 0755 root users -"
-  ];
-
-  # 2. System mount for Garnet (ext4)
-  fileSystems."/shared/Garnet" = {
-    device = "/dev/disk/by-uuid/bf49a367-83dd-4d9c-ab5b-5aaa29906569";
-    fsType = "ext4";
-    options = [ "nofail" "x-gvfs-show" "rw" ];
-  };
-
-  # 3. System mount for Pearl (btrfs)
-  fileSystems."/shared/Pearl" = {
-    device = "/dev/disk/by-uuid/d6dce8f5-8c8e-4088-b697-cf7016618972";
-    fsType = "btrfs";
-    options = [ "nofail" "x-gvfs-show" "rw" ];
-  };
 
   # 4. Per‑user symlinks are now handled by Home Manager (systemd.user service moved to home.nix)
 
@@ -319,17 +298,6 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
   hardware.graphics.extraPackages32 = with pkgs.pkgsi686Linux; [
     libva
     libvdpau-va-gl
-  ];
-
-  # -------------------
-  # Filesystems
-  # -------------------
-
-  # Swap
-  swapDevices = [
-    {
-      device = "/dev/sda3";
-    }
   ];
 
   # ----------------------------------------
