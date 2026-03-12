@@ -170,8 +170,11 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
   
   hardware.steam-hardware.enable = true;
 
+    programs.nix-ld.enable = true;
+    programs.nix-ld.libraries = with pkgs; [
+        stdenv.cc.cc.lib  # provides libstdc++.so.6
+    ];
 
-  # 4. Per‑user symlinks are now handled by Home Manager (systemd.user service moved to home.nix)
 
   users.users.gwen = {
     isNormalUser = true;

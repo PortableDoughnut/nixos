@@ -19,5 +19,6 @@
         davinci-resolve
         castero
         tt
+        yt-dlp
     ];
 }

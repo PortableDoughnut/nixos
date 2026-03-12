@@ -15,8 +15,17 @@ lib,
         zoxide
         zsh-powerlevel9k
         cargo
+        tree
         gcc
         p7zip
+        python313Packages.tkinter
+        rust-analyzer
+        typescript-language-server
+        lua-language-server
+        nodePackages.prettier
+        nodePackages.typescript-language-server
+        lua-language-server
+        nodePackages.vscode-langservers-extracted
         unzip
         unrar
         syncthing
