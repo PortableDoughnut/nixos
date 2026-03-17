@@ -1,9 +1,4 @@
-{ config
-, pkgs
-, inputs
-, lib
-, ...
-}:
+{ config, pkgs, inputs, lib, ... }:
 
 {
   home.packages = with pkgs; [
@@ -16,6 +11,7 @@
     cargo
     tree
     gcc
+    pnpm
     tsx
     xclip
     p7zip
@@ -27,6 +23,7 @@
     typescript-language-server
     vscode-extensions.biomejs.biome
     vscode-langservers-extracted
+    lazygit
     ast-grep
     beautysh
     pyright
