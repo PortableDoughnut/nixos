@@ -31,7 +31,6 @@
     tt
     _1password-cli
     _1password-gui
-    (python3.withPackages (ps: with ps; [ websockets ]))
   ];
 
   programs.zsh = {

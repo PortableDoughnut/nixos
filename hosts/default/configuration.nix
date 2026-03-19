@@ -1,12 +1,26 @@
-{ inputs, config, pkgs, lib, ... }:
+{ inputs, config, pkgs, lib, stdenv, ... }:
 
+let
+  # Import unstable channel for latest Ollama
+  unstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system};
+in
 {
+  # Enable Ollama service
+  services.ollama = {
+    enable = true;
+    package = unstable.ollama; # Get latest version
+    # Optional: pre-load models (comment out initially)
+    # loadModels = [ "qwen2.5:7b" "llama3.2:3b" ];
+  };
+
+  # Optional: Add Open WebUI for ChatGPT-like interface
+  virtualisation.docker.enable = true; # Open WebUI works well with Docker
+
   imports = [ ./hardware-configuration.nix ]; # from installer
   nixpkgs.config.allowUnfree = true; # allow non-free (NVIDIA, Steam, etc.)
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  # System‑wide packages (libraries, tools needed by root or multiple users)
   environment.systemPackages = with pkgs; [
     # Low‑level libraries and essential tools
     libxcb
@@ -24,6 +38,8 @@
     vim # emergency editor for root
     rustc
     cargo
+    ollama
+    curl
     nixos-artwork.wallpapers.catppuccin-mocha
     catppuccin
     catppuccin-kde
@@ -177,7 +193,6 @@
   programs.nix-ld.libraries = with pkgs; [
     stdenv.cc.cc.lib # provides libstdc++.so.6
   ];
-
 
   users.users.gwen = {
     isNormalUser = true;

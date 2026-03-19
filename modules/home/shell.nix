@@ -17,6 +17,7 @@
     p7zip
     python313Packages.tkinter
     rust-analyzer
+    go
     typescript-language-server
     lua-language-server
     prettier
