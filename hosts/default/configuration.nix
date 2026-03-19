@@ -1,10 +1,10 @@
 { inputs, config, pkgs, lib, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];  # from installer
-  nixpkgs.config.allowUnfree = true;           # allow non-free (NVIDIA, Steam, etc.)
+  imports = [ ./hardware-configuration.nix ]; # from installer
+  nixpkgs.config.allowUnfree = true; # allow non-free (NVIDIA, Steam, etc.)
 
-nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # System‑wide packages (libraries, tools needed by root or multiple users)
   environment.systemPackages = with pkgs; [
@@ -16,12 +16,14 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
     libxcb-render-util
     libxcb-wm
     wl-clipboard
-    kdePackages.plasma-workspace      # KDE core
-    kdePackages.qtwebsockets           # KDE dependency
-    kdePackages.polkit-kde-agent-1     # Polkit agent for KDE
-    libaacs                            # Blu‑ray library
-    libbdplus                           # Blu‑ray library
-    vim                                 # emergency editor for root
+    kdePackages.plasma-workspace # KDE core
+    kdePackages.qtwebsockets # KDE dependency
+    kdePackages.polkit-kde-agent-1 # Polkit agent for KDE
+    libaacs # Blu‑ray library
+    libbdplus # Blu‑ray library
+    vim # emergency editor for root
+    rustc
+    cargo
     nixos-artwork.wallpapers.catppuccin-mocha
     catppuccin
     catppuccin-kde
@@ -29,89 +31,89 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
     catppuccin-sddm
     catppuccin-grub
     catppuccin-plymouth
-    wget                                # download tool for system scripts
-    unrar                               # maybe needed by system services
-    p7zip                               # maybe needed by system services
+    wget # download tool for system scripts
+    unrar # maybe needed by system services
+    p7zip # maybe needed by system services
     mpd
     pulseaudio
-    (python3.withPackages (ps: with ps; [ websockets pynvim ]))  # if any system service uses it
+    (python3.withPackages (ps: with ps; [ websockets pynvim ])) # if any system service uses it
   ];
-    
-        programs.git = {
-        enable = true;
-            config = {
-                user = {
-                    name  = "Gwen Thelin";
-                    email = "gwen.thelin@proton.me";
-                };
-            init.defaultBranch = "main";
-        };
+
+  programs.git = {
+    enable = true;
+    config = {
+      user = {
+        name = "Gwen Thelin";
+        email = "gwen.thelin@proton.me";
+      };
+      init.defaultBranch = "main";
     };
+  };
 
-    
-    services.mpd = {
-        enable = true;
-        user = "gwen";
-  
-        settings = {
-            music_directory = "/shared/Garnet/Music";
-            audio_output = [
-                {
-                    type = "pulse";
-                    name = "PipeWire (PulseAudio)";
-                }
-            ];
-        };
+
+  services.mpd = {
+    enable = true;
+    user = "gwen";
+
+    settings = {
+      music_directory = "/shared/Garnet/Music";
+      audio_output = [
+        {
+          type = "pulse";
+          name = "PipeWire (PulseAudio)";
+        }
+      ];
     };
+  };
 
-    systemd.services.mpd.environment = {
-        PULSE_RUNTIME_PATH = "/run/user/1000/pulse/";
+  systemd.services.mpd.environment = {
+    PULSE_RUNTIME_PATH = "/run/user/1000/pulse/";
+  };
+
+  services.mpdscribble = {
+    enable = true;
+    endpoints = {
+      "last.fm" = {
+        url = "https://post.audioscrobbler.com/";
+        username = "PortableDonut";
+        passwordFile = "/etc/mpdscrobble-password";
+      };
     };
+  };
 
-    services.mpdscribble = {
-        enable = true;
-        endpoints = {
-            "last.fm" = {
-                url = "https://post.audioscrobbler.com/";
-                username = "PortableDonut";
-                passwordFile = "/etc/mpdscrobble-password";
-            };
-        };
-    };
-    
-    # Zoxide
-    programs.zoxide = {
-        enable = true;
-        enableZshIntegration = true;
-    };
+  # Zoxide
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
 
-    # Starship
-    programs.starship = {
-        enable = true;
-    };
+  # Starship
+  programs.starship = {
+    enable = true;
+  };
 
-    # Direnv
-    programs.direnv = {
-        enable = true;
-        nix-direnv.enable = true;
-    };
+  # Direnv
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
-    xdg.portal = {
-        enable = true;
+  xdg.portal = {
+    enable = true;
 
-        extraPortals = with pkgs; [
-            kdePackages.xdg-desktop-portal-kde
-        ];
+    extraPortals = with pkgs; [
+      kdePackages.xdg-desktop-portal-kde
+    ];
 
-        configPackages = with pkgs; [
-            kdePackages.xdg-desktop-portal-kde
-        ];
+    configPackages = with pkgs; [
+      kdePackages.xdg-desktop-portal-kde
+    ];
 
-    };
+  };
 
-	environment.sessionVariables = {
-		ELECTRON_OZONE_PLATFORM_HINT = "wayland";
-	};
+  environment.sessionVariables = {
+    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+  };
 
   services.displayManager.sddm = {
     enable = true;
@@ -122,7 +124,7 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
     enable = true;
     # The package catppuccin-plymouth needs to be available.
     # You might need to add it to your nixpkgs config or fetch it directly.
-    themePackages = [ 
+    themePackages = [
       (pkgs.catppuccin-plymouth.override {
         variant = "mocha"; # Or your preferred flavour: latte, frappe, macchiato
       })
@@ -132,7 +134,8 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   services.udisks2.enable = true;
 
-  nixpkgs.config.permittedInsecurePackages = [ # needed until new stremio frontend is stable
+  nixpkgs.config.permittedInsecurePackages = [
+    # needed until new stremio frontend is stable
     "qtwebengine-5.15.19"
     "aspnetcore-runtime-6.0.36"
     "aspnetcore-runtime-wrapped-6.0.36"
@@ -157,7 +160,7 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
-    trusted-users = ["root" "gwen"];
+    trusted-users = [ "root" "gwen" ];
   };
 
   hardware.nvidia = {
@@ -166,14 +169,14 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
     powerManagement.enable = true;
   };
 
-  programs.zsh.enable = true;  # makes zsh available system‑wide (users can still choose it)
-  
+  programs.zsh.enable = true; # makes zsh available system‑wide (users can still choose it)
+
   hardware.steam-hardware.enable = true;
 
-    programs.nix-ld.enable = true;
-    programs.nix-ld.libraries = with pkgs; [
-        stdenv.cc.cc.lib  # provides libstdc++.so.6
-    ];
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc.lib # provides libstdc++.so.6
+  ];
 
 
   users.users.gwen = {
@@ -181,7 +184,7 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
     description = "Gwen Thelin";
     home = "/home/gwen";
     extraGroups = [
-      "wheel"        # sudo
+      "wheel" # sudo
       "networkmanager"
       "audio"
       "video"
@@ -205,18 +208,18 @@ nix.settings.experimental-features = [ "nix-command" "flakes" ];
     shell = pkgs.bash;
   };
 
-    
-    programs.steam = {
-        enable = true;
-        remotePlay.openFirewall = true;
-    };
 
-    programs.neovim = {
-        enable = true;
-        viAlias = true;
-        vimAlias = true;
-        defaultEditor = true;
-    };
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+  };
+
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
+    defaultEditor = true;
+  };
 
   users.mutableUsers = true;
 
