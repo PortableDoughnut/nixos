@@ -20,7 +20,6 @@
     perl
     ruby
     vimPlugins.trouble-nvim
-    vimPlugins.markdown-preview-nvim
     kotlin-language-server
     starship
     kitty
