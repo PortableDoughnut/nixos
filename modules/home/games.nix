@@ -11,6 +11,7 @@
     steamcmd
     wineWow64Packages.waylandFull
     bottles
+    melonds
     mindustry
     openttd
     luanti

@@ -27,9 +27,13 @@
     lazygit
     ast-grep
     beautysh
+    rust-analyzer
+    rustfmt
+    bacon
     pyright
     sourcekit-lsp
     lua-language-server
+    bc
     nodePackages.vscode-langservers-extracted
     unzip
     unrar

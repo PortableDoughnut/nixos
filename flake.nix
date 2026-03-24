@@ -5,14 +5,15 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nix-gaming.url = "github:fufexan/nix-gaming";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    jupyter.url = "github:kirelagin/jupyter.nix";
+    bacon-ls.url = "github:crisidev/bacon-ls";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, jupyter, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, bacon-ls, ... }@inputs:
     let
       system = "x86_64-linux";
     in
@@ -27,7 +28,7 @@
           }
 
           inputs.home-manager.nixosModules.default
-          ({ config, pkgs, inputs, jupyter, ... }: {
+          ({ config, pkgs, inputs, bacon-ls, ... }: {
             home-manager = {
               useUserPackages = true;
               useGlobalPkgs = true;

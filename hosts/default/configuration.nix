@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, lib, stdenv, ... }:
+{ inputs, config, pkgs, lib, ... }:
 
 let
   # Import unstable channel for latest Ollama
@@ -28,6 +28,8 @@ in
     libxcb-cursor
     libxcb-keysyms
     libxcb-render-util
+    ffmpeg-full
+    python312Packages.mutagen
     libxcb-wm
     wl-clipboard
     kdePackages.plasma-workspace # KDE core
@@ -223,7 +225,6 @@ in
     shell = pkgs.bash;
   };
 
-
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
@@ -245,6 +246,15 @@ in
     desktopManager.plasma6.enable = true;
     displayManager.sddm.wayland.enable = true;
     flatpak.enable = true;
+  };
+
+  services.xserver = {
+    enable = true;
+    xkb = {
+      layout = "us";
+      variant = "dvorak";
+      options = "esperanto:dvorak";
+    };
   };
 
   programs.ssh.askPassword = lib.mkForce "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass";
@@ -324,7 +334,8 @@ in
   # ----------------------------------------
   # Other recommended options (localization, etc.)
   # ----------------------------------------
-  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.supportedLocales = [ "all" ];
+  i18n.defaultLocale = "eo_EO.UTF-8";
   console.keyMap = "us";
 
   system.stateVersion = "26.05";
